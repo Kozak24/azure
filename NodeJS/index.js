@@ -44,9 +44,13 @@ app.post("/register", urlencodedParser, function (request, response) {
 	executeStatement1(request.body.userName, request.body.userLastName);
 });
  
+/*app.get("/public/index", function(request, response){
+		response.send("<h1>Головна сторінка</h1>");
+		queryDatabase(response);
+});*/
+
 app.get("/", function(request, response){
-		//response.send("<h1>Головна сторінка</h1>");
-		 
+		response.send("<h1>Головна сторінка</h1>");
 		queryDatabase(response);
 
 });
