@@ -13,7 +13,7 @@ var config =
    {
      userName: 'kozak', // update me
      password: 'Ebosut99', // update me
-     server: 'kozaksql.database.windows.net', // update me
+     server: 'kozaksql2.database.windows.net', // update me
      options: 
         {
            database: 'KozakSQL' //update me
@@ -44,43 +44,43 @@ app.post("/register", urlencodedParser, function (request, response) {
 	executeStatement1(request.body.userName, request.body.userLastName);
 });
  
-/*app.get("/public/index", function(request, response){
-		response.send("<h1>Головна сторінка</h1>");
-		queryDatabase(response);
-});*/
-
 app.get("/", function(request, response){
-		response.send("<h1>Головна сторінка</h1>");
+		//response.send('Ok');
 		queryDatabase(response);
 
 });
  
 function queryDatabase(response)
 { console.log('Reading rows from the Table...');
-  let result = "";
+  let result = '<table border="1"><tr><th>Id</th><th>First name</th><th>Last name</th></tr>';
 	
        // Read all rows from table
      request = new Request(
           "SELECT * FROM PERSON",
              function(err, rowCount, rows) 
                 {
+				console.log("%s\t", result);
+				result += '</table>';
                     console.log(rowCount + ' row(s) returned');
 					response.send(result);
                 }
             );
 
      request.on('row', function(columns) {
+		result += '<tr>';
         columns.forEach(function(column) {
 			// Column name and column value
 			//result += `${column.metadata.colName}  ${column.value} `;
 			
 			//Column value only
-			result += `${column.value} `;
+			result += '<th>';
+			result += `${column.value}`;
+			result += '</th>'
 			
 			//For debug
             //console.log("%s\t%s", column.metadata.colName, column.value);
          });
-		 result += `<br>`;
+		 result += '</tr>';
     });
     connection.execSql(request);
 }
@@ -104,4 +104,5 @@ function executeStatement1(firstName, lastName) {
         connection.execSql(request);  
     }  
  
-app.listen(80);
+var port = process.env.PORT || 1337;
+app.listen(port);
